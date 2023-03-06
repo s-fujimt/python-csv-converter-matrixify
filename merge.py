@@ -162,6 +162,7 @@ def mergeFiles():
             "Smart Collections": df['category_ids'].apply(lambda x: get_category_name(x)),
             "Variant Command": df.apply(
                 lambda x: 'DELETE' if x['product_release_end_date_sku'] < pd.Timestamp(date.today())
+                # lambda x: '' if x['product_release_end_date_sku'] < pd.Timestamp(date.today())
                 or x['deleted_at_sku'] > pd.Timestamp(date.today())
                 or x['deleted_at_group'] > pd.Timestamp(date.today())
                 else 'MERGE', axis=1),
@@ -220,7 +221,9 @@ def mergeFiles():
                 lambda x: x.strftime('%Y-%m-%d') if x > pd.Timestamp(date.today()) else ''),
             "Variant Metafield: custom.how_to_set [json]": df['how_to_set'].apply(lambda x: x if x != "[]" else '').apply(lambda x: replace_path(x)),
             "Variant Metafield: custom.limit_sku_flg [number_integer]": df['limit_flg'],
+            # "Variant Metafield: custom.limit_sku_flg [number_integer]": df['limit_flg'].apply(lambda x: "" if x == 1 else x),
             "Metafield: custom.limit_group_flg [number_integer]": df['limited_flg']
+            # "Metafield: custom.limit_group_flg [number_integer]": df['limited_flg'].apply(lambda x: "" if x == 1 else x)
         })
 
         return {"error": "", "data": df_output}
