@@ -24,16 +24,10 @@ def get_category_name(category_ids):
 
 
 def get_image_position(product_code, df):
-    rep_col_product = df[df
-                         ['product_code'] == product_code]['representative_product_code'].values[0]
-    if rep_col_product == product_code:
-        return 1
-    else:
-        products = df[df
-                      ['product_code'] == product_code]['product_codes'].values[0].split(',')
-        products = [x for x in products if x != rep_col_product]
-        products.sort(reverse=True)
-        return products.index(product_code) + 2
+    products = df[df
+                  ['product_code'] == product_code]['product_codes'].values[0].split(',')
+    products.sort(reverse=True)
+    return products.index(product_code) + 1
 
 
 def replace_path(cell):
@@ -92,11 +86,11 @@ def create_award_name(product_code):
 
 def create_modal_btn_text(row):
     output = []
-    if row['all_ingredients']:
+    if row['all_ingredients'] and type(row['all_ingredients']) == str:
         output.append('成分表示')
-    if row['how_to_use']:
+    if row['how_to_use'] and row['how_to_use'] != '[]':
         output.append('使用方法')
-    if row['how_to_set']:
+    if row['how_to_set'] and row['how_to_set'] != '[]':
         output.append('セット方法')
     return str(output).replace("'", '"')
 
